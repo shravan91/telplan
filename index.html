@@ -126,7 +126,7 @@ map.on('load', function() {
             d.properties.month = new Date(d.properties.time).getMonth();
             return d;
         });*/
-
+        console.log(data);
         map.addSource('intersections_centrality_closeness', {
             'type': 'geojson',
             'data': data
@@ -154,29 +154,15 @@ map.on('load', function() {
                 }
             }
         });
-
-        map.addLayer({
-            'id': 'centrality-labels',
-            'type': 'symbol',
-            'source': 'intersections_centrality_closeness',
-            'layout': {
-                'text-field': '{mag}m',
-                'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-                'text-size': 12
-            },
-            'paint': {
-                'text-color': 'rgba(0,0,0,0.5)'
-            }
-        });
-
+        
         // Set filter to first month of the year
         // 0 = January
-        filterBy(0);
+        //filterBy(0);
 
-        document.getElementById('slider').addEventListener('input', function(e) {
+        /*(document.getElementById('slider').addEventListener('input', function(e) {
             var month = parseInt(e.target.value, 10);
             filterBy(month);
-        });
+        });*/
     });
 });
 </script>
