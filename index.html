@@ -99,7 +99,7 @@ function filterBy(month) {
 
     var filters = ['==', 'month', month];
     map.setFilter('centrality-circles', filters);
-    map.setFilter('centrality-circles-labels', filters);
+    map.setFilter('centrality-labels', filters);
 
     // Set the label to the month
     document.getElementById('month').textContent = months[month];
