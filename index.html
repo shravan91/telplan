@@ -98,8 +98,8 @@ var months = [
 function filterBy(month) {
 
     var filters = ['==', 'month', month];
-    map.setFilter('earthquake-circles', filters);
-    map.setFilter('earthquake-labels', filters);
+    map.setFilter('centrality-circles', filters);
+    map.setFilter('centrality-circles-labels', filters);
 
     // Set the label to the month
     document.getElementById('month').textContent = months[month];
@@ -133,7 +133,7 @@ map.on('load', function() {
         });
 
         map.addLayer({
-            'id': 'earthquake-circles',
+            'id': 'centrality-circles',
             'type': 'circle',
             'source': 'intersections_centrality_closeness',
             'paint': {
@@ -156,7 +156,7 @@ map.on('load', function() {
         });
 
         map.addLayer({
-            'id': 'earthquake-labels',
+            'id': 'centrality-labels',
             'type': 'symbol',
             'source': 'intersections_centrality_closeness',
             'layout': {
