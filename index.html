@@ -63,7 +63,7 @@
     <div class='map-overlay-inner'>
         <div id='legend' class='legend'>
             <div class='bar'></div>
-            <div>Magnitude (m)</div>
+            <div>Centrality (m)</div>
         </div>
     </div>
 </div>
@@ -77,6 +77,9 @@ var map = new mapboxgl.Map({
     center: [4.9041, 52.3548],
     zoom: 11
 });
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
 
 var months = [
     'January',
