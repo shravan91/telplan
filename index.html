@@ -122,10 +122,10 @@ map.on('load', function() {
 
         // Create a month property value based on time
         // used to filter against.
-        data.features = data.features.map(function(d) {
+        /*data.features = data.features.map(function(d) {
             d.properties.month = new Date(d.properties.time).getMonth();
             return d;
-        });
+        });*/
 
         map.addSource('intersections_centrality_closeness', {
             'type': 'geojson',
