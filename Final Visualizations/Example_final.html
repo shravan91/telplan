@@ -1,9 +1,9 @@
-<!-- Links_Betweeness_Centrality -->
+
 <html>
 
 <head>
   <meta charset='utf-8' />
-  <title>Links_Betweeness_Centrality</title> 
+  <title>Amsterdam cameras</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.css' rel='stylesheet' />
@@ -71,25 +71,24 @@
 <body>
   <div id='map'></div>
   <div id='console'>
-    <h1>Betweeness Centrality - Links</h1>
-    <p>Data: <a href='https://github.com/shravan91/telplan/blob/master/data/example.geojson'>Betweeness Centrality</a> in Amsterdam,June 2016</p> <!-- Change the month depending on the tables -->
+    <h1>Amsterdam</h1>
+    <p>Data: <a href='https://github.com/shravan91/telplan/blob/master/data/example.geojson'>Betweeness Centrality</a> in Amsterdam, JUN 2016</p>
     <div class='session'>
-      <h2>Betweeness Centrality</h2>
+      <h2>Centrality Measure</h2>
       <div class='row colors'>
       </div>
-      <div class='row labels'> <!-- labels will be based on input from the value column -->
+      <div class='row labels'>
         <div class='label'>0</div>
         <div class='label'>1</div>
         <div class='label'>2</div>
         <div class='label'>3</div>
         <div class='label'>4</div>
-        <div class='label'>5</div>
+        <div class='label'>5+</div>
       </div>
     </div>
-   <!-- <div class='session' id='sliderbar'>
+    <div class='session' id='sliderbar'>
       <h2>Hour: <label id='active-hour'>12PM</label></h2>
-      <input id='slider' class='row' type='range' min='0' max='23' step='1' value='12' />  Change the value based on the active hour/time of the day 
-     
+      <input id='slider' class='row' type='range' min='0' max='23' step='1' value='12' />
     </div>
     <div class='session'>
   <h2>Day of the week</h2>
@@ -101,37 +100,36 @@
     <input id='weekend' type='radio' name='toggle' value='weekend'>
     <label for='weekend'>Weekend</label>
   </div>
-</div> -->
+</div>
   </div>
   <script>
   mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhaGN3aSIsImEiOiJjajFuYnFtd2kwMDEwMnhxdmphZGU0YWMxIn0.3y2n_9dxVxR0FxHAxUOq9A';
-  
   // This adds the map to your page
   var map = new mapboxgl.Map({
     container: 'map', // container id specified in the HTML
-    style: 'mapbox://styles/mapbox/light-v9', // Change the style based on the requirements (can be used to remove the OpenStreetMap style)
+    style: 'mapbox://styles/mapbox/light-v9', // style URL
     center: [4.9041, 52.3548], // initial map center in [lon, lat]
-    zoom: 12
+    zoom: 11
   });
 
   map.on('load', function() {
 
     var filterHour = ['==', 'Hour', 12];
-    var filterDay = ['!=', 'Day', 'Bob']; // Change Bob if it is possible to some other variable name
+    var filterDay = ['!=', 'Day', 'hi'];
 
     map.addLayer({
-      id: 'centrality',
+      id: 'Centrality',
       type: 'circle',
       source: {
         type: 'geojson',
-        data: 'https://shravan91.github.io/telplan/data/example.geojson' // replace this with the url of different geojson files
+        data: 'https://shravan91.github.io/telplan/data/example.geojson' // replace this with the url of your own geojson
       },
       paint: {
         'circle-radius': {
-          property: 'Measure', // Change this based on the property or column value
+          property: 'Measure',
           stops: [
-            [0, 3], // if the value is 0 - Radius is 3
-            [5, 15] // if the value is 5 - Radius is 15
+            [0, 3],
+            [5, 15]
           ]
         },
         'circle-color': {
@@ -145,19 +143,17 @@
             [5, '#AA5E79']
           ]
         },
-        'circle-opacity': 0.8 // style the circle's opacity
+        'circle-opacity': 0.8
       },
       filter: ['all', filterHour, filterDay]
     }, 'admin-2-boundaries-dispute'); // place the layer beneath this layer in the basemap
-
-    /*
 
     document.getElementById('slider').addEventListener('input', function(e) {
       // get the current hour as a integer
       var hour = parseInt(e.target.value);
       // map.setFilter(layer-name, filter)
       filterHour = ['==', 'Hour', hour];
-      map.setFilter('value', ['all', filterHour, filterDay]);
+      map.setFilter('Centrality', ['==', 'Hour', hour]);
 
       // converting 0-23 hour to AMPM format
       var ampm = hour >= 12 ? 'PM' : 'AM';
@@ -166,11 +162,12 @@
       document.getElementById('active-hour').innerText = hour12 + ampm;
     });
 
-    document.getElementById('filters').addEventListener('change', function(e) {
+document.getElementById('filters').addEventListener('change', function(e) {
       var day = e.target.value;
+      var filterDay;
       if (day === 'all') {
         // feature[key] exists
-        filterDay = ['!=', 'Day', 'Bob'];
+        filterDay = ['!=', 'Day', 'hi'];
       } else if (day === 'weekday') {
         // feature[key] is any of these values
         filterDay = ['!in', 'Day', 'Sat', 'Sun'];
@@ -180,10 +177,9 @@
       } else {
         console.log('error');
       }
-      map.setFilter('value', ['all', filterHour, filterDay]);
+      map.setFilter('Centrality', ['all', filterHour, filterDay]);
     });
 
-  }); */
   });
   </script>
 </body>
