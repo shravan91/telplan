@@ -3,7 +3,7 @@
 
 <head>
   <meta charset='utf-8' />
-  <title>NYC vehicle collisions</title>
+  <title>Telplan Project - CWI</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.css' rel='stylesheet' />
@@ -71,10 +71,10 @@
 <body>
   <div id='map'></div>
   <div id='console'>
-    <h1>Motor vehicle collisions</h1>
-    <p>Data: <a href='https://data.cityofnewyork.us/Public-Safety/NYPD-Motor-Vehicle-Collisions/h9gi-nx95'>Motor vehicle collision injuries and death</a> in NYC, Jan 2016</p>
+    <h1>Centrality</h1>
+    <p>Data: <a href='https://shravan91.github.io/telplan/intersections_centrality_closeness.geojson'>Centrality</a> in AMS, JUNE 2016</p>
     <div class='session'>
-      <h2>Casualty</h2>
+      <h2>Telplan</h2>
       <div class='row colors'>
       </div>
       <div class='row labels'>
@@ -103,12 +103,12 @@
 </div>
   </div>
   <script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY5YzJzczA2ejIzM29hNGQ3emFsMXgifQ.az9JUrQP7klCgD3W-ueILQ';
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhaGN3aSIsImEiOiJjajFuYnFtd2kwMDEwMnhxdmphZGU0YWMxIn0.3y2n_9dxVxR0FxHAxUOq9A';
   // This adds the map to your page
   var map = new mapboxgl.Map({
     container: 'map', // container id specified in the HTML
     style: 'mapbox://styles/mapbox/light-v9', // style URL
-    center: [-74.0059, 40.7128], // initial map center in [lon, lat]
+    center: [4.9041, 52.3548], // initial map center in [lon, lat]
     zoom: 12
   });
 
@@ -122,18 +122,18 @@
       type: 'circle',
       source: {
         type: 'geojson',
-        data: './collisions1601.geojson' // replace this with the url of your own geojson
+        data: 'https://shravan91.github.io/telplan/intersections_centrality_closeness.geojson' // replace this with the url of your own geojson
       },
       paint: {
         'circle-radius': {
-          property: 'Casualty',
+          property: 'properties',
           stops: [
             [0, 3],
             [5, 15]
           ]
         },
         'circle-color': {
-          property: 'Casualty',
+          property: 'properties',
           stops: [
             [0, '#2DC4B2'],
             [1, '#3BB3C3'],
@@ -176,7 +176,7 @@
       } else {
         console.log('error');
       }
-      map.setFilter('collisions', ['all', filterHour, filterDay]);
+      map.setFilter('properties', ['all', filterHour, filterDay]);
     });
 
   });
