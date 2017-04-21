@@ -72,7 +72,7 @@
   <div id='map'></div>
   <div id='console'>
     <h1>Betweeness Centrality - Links</h1>
-    <p>Data: <a href='https://github.com/shravan91/telplan/blob/master/Data/example.geojson'>Betweeness Centrality</a> in Amsterdam,June 2016</p> <!-- Change the month depending on the tables -->
+    <p>Data: <a href='https://github.com/shravan91/telplan/blob/master/data/example.geojson'>Betweeness Centrality</a> in Amsterdam,June 2016</p> <!-- Change the month depending on the tables -->
     <div class='session'>
       <h2>Betweeness Centrality</h2>
       <div class='row colors'>
@@ -124,18 +124,18 @@
       type: 'circle',
       source: {
         type: 'geojson',
-        data: 'https://shravan91.github.io/telplan/Data/example.geojson' // replace this with the url of different geojson files
+        data: 'https://shravan91.github.io/telplan/data/example.geojson' // replace this with the url of different geojson files
       },
       paint: {
         'circle-radius': {
-          property: 'value', // Change this based on the property or column value
+          property: 'Measure', // Change this based on the property or column value
           stops: [
             [0, 3], // if the value is 0 - Radius is 3
             [5, 15] // if the value is 5 - Radius is 15
           ]
         },
         'circle-color': {
-          property: 'value',
+          property: 'Measure',
           stops: [
             [0, '#2DC4B2'],
             [1, '#3BB3C3'],
