@@ -117,7 +117,6 @@ var layer = {
       type: 'circle',
       source: {
         type: 'geojson',
-        data: 'https://shravan91.github.io/telplan/data/slow_flow_links_betweenness_centrality_joined.geojson' // replace this with the url of your own geojson
       },
       paint: {
         'circle-radius': {
@@ -130,10 +129,10 @@ var layer = {
         'circle-color': {
           property: '0',
           stops: [
-            [0, '#2DC4B2'],
-            [1, '#3BB3C3'],
-            [2, '#669EC4'],
-            [3, '#8B88B6'],
+            [0.9, '#2DC4B2'],
+            [0.990, '#3BB3C3'],
+            [0.995, '#669EC4'],
+            [0.996, '#8B88B6'],
             [4, '#A2719B'],
             [5, '#AA5E79']
           ]
@@ -156,7 +155,7 @@ map.on('load', function() {
     //
     // Here we're using d3 to help us make the ajax request but you can use
     // Any request method (library or otherwise) you wish.
-    d3.json('/Data/intersections_centrality_closeness.geojson', function(err, data) {
+    d3.json('/Data/city_flow_vehicle_links_closeness_centrality_joined.csv.geojson', function(err, data) {
         if (err) throw err;
 
         // Create a month property value based on time
@@ -165,19 +164,21 @@ map.on('load', function() {
             d.properties.month = new Date(d.properties.time).getMonth();
             return d;
         });*/
-        console.log(data);
         map.addSource('intersections_centrality_closeness', {
             'type': 'geojson',
             'data': data
         });
-
-
+        layer['source']['data'] = data;
         map.addLayer(layer, 'measures');
-        
-        // Set filter to first month of the year
-        // 0 = January
-        //filterBy(0);
+        var minSlot = data['properties']['min_timeslot'];
+        var maxSlot = data['properties']['max_timeslot'];
 
+        var minValue = data['properties']['min_value'];
+        var maxValue = data['properties']['max_value'];
+/* adapt layer to min /max value of values */
+
+        document.getElementById('slider').setAttribute('min',minSlot);
+        document.getElementById('slider').setAttribute('max',maxSlot);
         document.getElementById('slider').addEventListener('input', function(e) {
             var slot = parseInt(e.target.value, 10);
             changeTimeslot(slot);
