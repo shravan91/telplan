@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<script src='//d3js.org/d3.v3.min.js' charset='utf-8'></script>
+<script src='https://d3js.org/d3.v3.min.js' charset='utf-8'></script>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhaGN3aSIsImEiOiJjajFuYnFtd2kwMDEwMnhxdmphZGU0YWMxIn0.3y2n_9dxVxR0FxHAxUOq9A';
 var map = new mapboxgl.Map({
@@ -105,6 +105,45 @@ function filterBy(month) {
     document.getElementById('month').textContent = months[month];
 }
 
+function changeTimeslot(slot){
+    map.removeLayer('centrality');
+    layer.paint['circle-color']['property'] = slot.toString();
+    layer.paint['circle-radius']['property'] = slot.toString();
+    map.addLayer(layer, 'centrality');
+};
+
+var layer = {
+      id: 'centrality',
+      type: 'circle',
+      source: {
+        type: 'geojson',
+        data: 'https://shravan91.github.io/telplan/data/slow_flow_links_betweenness_centrality_joined.geojson' // replace this with the url of your own geojson
+      },
+      paint: {
+        'circle-radius': {
+          property: '0',
+          stops: [
+            [0, 1],
+            [5, 5]
+          ]
+        },
+        'circle-color': {
+          property: '0',
+          stops: [
+            [0, '#2DC4B2'],
+            [1, '#3BB3C3'],
+            [2, '#669EC4'],
+            [3, '#8B88B6'],
+            [4, '#A2719B'],
+            [5, '#AA5E79']
+          ]
+        },
+        'circle-opacity': 0.8
+      },
+    //  filter: ['==', 'Hour', 1]
+    }
+
+
 map.on('load', function() {
 
     // Data courtesy of http://earthquake.usgs.gov/
@@ -117,7 +156,7 @@ map.on('load', function() {
     //
     // Here we're using d3 to help us make the ajax request but you can use
     // Any request method (library or otherwise) you wish.
-    d3.json('https://shravan91.github.io/telplan/intersections_centrality_closeness.geojson', function(err, data) {
+    d3.json('/Data/intersections_centrality_closeness.geojson', function(err, data) {
         if (err) throw err;
 
         // Create a month property value based on time
@@ -132,44 +171,17 @@ map.on('load', function() {
             'data': data
         });
 
-        map.addLayer({
-            'id': 'centrality-circles',
-            'type': 'circle',
-            'source': 'intersections_centrality_closeness',
-            'paint': {
-            	// make circles larger as the user zooms from z12 to z22
-            'circle-radius': {
-                'base': 1.75,
-                'stops': [[12, 2], [22, 180]]
-            },
-            	
-                'circle-color': {
-                    property: 'properties',
-                    stops: [
-                        [6, '#FCA107'],
-                        [8, '#7F3121']
-                    ]
-                },
-                /*
-                'circle-opacity': 0.75,
-                'circle-radius': {
-                    property: '1',
-                    stops: [
-                        [6, 20],
-                        [8, 40]
-                    ]
-                }*/
-            }
-        });
+
+        map.addLayer(layer, 'measures');
         
         // Set filter to first month of the year
         // 0 = January
         //filterBy(0);
 
-        /*(document.getElementById('slider').addEventListener('input', function(e) {
-            var month = parseInt(e.target.value, 10);
-            filterBy(month);
-        });*/
+        document.getElementById('slider').addEventListener('input', function(e) {
+            var slot = parseInt(e.target.value, 10);
+            changeTimeslot(slot);
+        });
     });
 });
 </script>
