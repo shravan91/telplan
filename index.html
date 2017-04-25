@@ -62,7 +62,7 @@
     <div class='map-overlay-inner'>
         <div id='legend' class='legend'>
             <div class='bar'></div>
-            <div>Centrality (m)</div>
+            <div id="measurement-type"></div>
         </div>
     </div>
 </div>
@@ -162,8 +162,8 @@ map.on('load', function() {
         layer.paint['circle-color']['stops'][3][0] = minValue+degree*3;
         layer.paint['circle-color']['stops'][4][0] = minValue+degree*4;
         layer.paint['circle-color']['stops'][5][0] = maxValue;
-
         map.addLayer(layer, 'measures');
+        document.getElementById("measurement-type").innerHTML = data['properties']['type']
         document.getElementById("date").innerHTML = new Date(startTime);
         document.getElementById('slider').setAttribute('min',minSlot);
         document.getElementById('slider').setAttribute('max',maxSlot);
