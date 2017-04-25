@@ -56,7 +56,7 @@
 <div class='map-overlay top'>
     <div class='map-overlay-inner'>
         <h2>Telplan</h2>
-        <label id='month'></label>
+        <p id='date'></pz>
         <input id='slider' type='range' min='0' max='11' step='1' value='0' />
     </div>
     <div class='map-overlay-inner'>
@@ -130,7 +130,7 @@ map.on('load', function() {
     //
     // Here we're using d3 to help us make the ajax request but you can use
     // Any request method (library or otherwise) you wish.
-    d3.json('/Data/city_flow_vehicle_links_closeness_centrality_joined.csv.geojson', function(err, data) {
+    d3.json('/data/city_flow_vehicle_links_closeness_centrality_joined.csv.geojson', function(err, data) {
         if (err) throw err;
 
         // Create a month property value based on time
