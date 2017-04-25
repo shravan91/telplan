@@ -80,31 +80,6 @@ var map = new mapboxgl.Map({
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
-var months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-];
-
-function filterBy(month) {
-
-    var filters = ['==', 'month', month];
-    map.setFilter('centrality-circles', filters);
-    map.setFilter('centrality-labels', filters);
-
-    // Set the label to the month
-    document.getElementById('month').textContent = months[month];
-}
-
 function changeTimeslot(slot){
     map.removeLayer('centrality');
     layer.paint['circle-color']['property'] = slot.toString();
@@ -169,14 +144,24 @@ map.on('load', function() {
             'data': data
         });
         layer['source']['data'] = data;
-        map.addLayer(layer, 'measures');
         var minSlot = data['properties']['min_timeslot'];
         var maxSlot = data['properties']['max_timeslot'];
 
         var minValue = data['properties']['min_value'];
         var maxValue = data['properties']['max_value'];
 /* adapt layer to min /max value of values */
+        layer.paint['circle-radius']['stops'][0][0] = minValue;
+        layer.paint['circle-radius']['stops'][1][0] = maxValue;
 
+        var degree = (maxValue-minValue)/6;
+        layer.paint['circle-color']['stops'][0][0] = minValue;
+        layer.paint['circle-color']['stops'][1][0] = minValue+degree*1;
+        layer.paint['circle-color']['stops'][2][0] = minValue+degree*2;
+        layer.paint['circle-color']['stops'][3][0] = minValue+degree*3;
+        layer.paint['circle-color']['stops'][4][0] = minValue+degree*4;
+        layer.paint['circle-color']['stops'][5][0] = maxValue;
+
+        map.addLayer(layer, 'measures');
         document.getElementById('slider').setAttribute('min',minSlot);
         document.getElementById('slider').setAttribute('max',maxSlot);
         document.getElementById('slider').addEventListener('input', function(e) {
