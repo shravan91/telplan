@@ -57,13 +57,25 @@
     <div class='map-overlay-inner'>
         <h2>Telplan</h2>
         <p id='date'></p>
-        <input id='slider' type='range' min='0' max='11' step='1' value='0' />
+        <input id='slider' type='range' min='0' max='23' step='1' value='0' />
     </div>
     <div class='map-overlay-inner'>
         <div id='legend' class='legend'>
             <div class='bar'></div>
             <div id="measurement-type"></div>
         </div>
+    </div>
+
+    <div class='map-overlay-inner'>
+<form action="">
+        <input type="radio" name="dow" onclick="moveTimeslot(0);" value="0">Monday</input>
+        <input type="radio" name="dow" onclick="moveTimeslot(1);" value="1">Tuesday</input>
+        <input type="radio" name="dow" onclick="moveTimeslot(2);" value="1">Wednesday</input>
+        <input type="radio" name="dow" onclick="moveTimeslot(3);" value="1">Thursday</input>
+        <input type="radio" name="dow" onclick="moveTimeslot(4);" value="1" >Friday</input>
+        <input type="radio" name="dow" onclick="moveTimeslot(5);" value="1" >Saturday</input>
+        <input type="radio" name="dow" onclick="moveTimeslot(6);" value="1" >Sunday</input>
+</form>
     </div>
 </div>
 
@@ -80,7 +92,20 @@ var map = new mapboxgl.Map({
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
+function moveTimeslot(day){
+    day = parseInt(day);
+    var hours = parseInt(document.getElementById('slider').value);
+    var day = parseInt(properties['day_'+day]);
+    if (!day){
+        return;
+    }
+    console.log("day "+day);
+    console.log("hours "+hours);
+    changeTimeslot(Math.round(day+hours));
+}
+
 function changeTimeslot(slot){
+    console.log("Move to timeslot "+slot);
     map.removeLayer('centrality');
     layer.paint['circle-color']['property'] = slot.toString();
     layer.paint['circle-radius']['property'] = slot.toString();
@@ -118,6 +143,7 @@ var layer = {
     //  filter: ['==', 'Hour', 1]
     }
 
+var properties = {};
 var startTime = 0;
 
 map.on('load', function() {
@@ -146,6 +172,7 @@ map.on('load', function() {
             'data': data
         });
         layer['source']['data'] = data;
+        properties = data['properties']
         var minSlot = data['properties']['min_timeslot'];
         var maxSlot = data['properties']['max_timeslot'];
         startTime = data['properties']['starttime'];
@@ -165,12 +192,11 @@ map.on('load', function() {
         map.addLayer(layer, 'measures');
         document.getElementById("measurement-type").innerHTML = data['properties']['type']
         document.getElementById("date").innerHTML = new Date(startTime);
-        document.getElementById('slider').setAttribute('min',minSlot);
-        document.getElementById('slider').setAttribute('max',maxSlot);
         document.getElementById('slider').addEventListener('input', function(e) {
             var slot = parseInt(e.target.value, 10);
             changeTimeslot(slot);
         });
+moveTimeslot(0);
     });
 });
 </script>
