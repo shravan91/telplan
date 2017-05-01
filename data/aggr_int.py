@@ -18,6 +18,7 @@ p['type'] = 'CLOSENESS'
 x['properties']['starttime'] = 1464732000000
 
 print p
+length_f = None
 for feature in x['features']:
    for timeslot,value in feature['properties'].items():
        timeslot = int(timeslot)
@@ -51,7 +52,10 @@ for i in range(min_timeslot,max_timeslot):
 
 print x['properties']
 
-
+for feature in x['features']:
+    for i in range(min_timeslot,max_timeslot):
+        if i not in feature['properties']:
+            feature['properties'][i] = 0
 print (min_timeslot, max_timeslot, min_value, max_value)
 g = open(sys.argv[1],'w')
 simplejson.dump(x, g)
