@@ -1,9 +1,19 @@
 ## Welcome to the website on the Telplan project of Centrum Wiskunde en Informatica
 
+### Folders
+
+#### Data folder 
+This folder contains the data for the project
+
+#### Webpages folder
+This folder consits of the webpages for the visualizations
+
 
 We are still updating the README file!
 
+--------------
 
+# Markdown tutorial
 
 ## Welcome to GitHub Pages
 
