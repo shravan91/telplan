@@ -68,14 +68,20 @@
 
     <div class='map-overlay-inner'>
 <form action="">
-        <input type="radio" name="dow" onclick="moveTimeslot(0);" value="0">Monday</input>
-        <input type="radio" name="dow" onclick="moveTimeslot(1);" value="1">Tuesday</input>
+<div>
+<label>
+        <input type="radio" name="dow" onclick="moveTimeslot(0);" value="0">Monday</input><br>
+
+        <input type="radio" name="dow" onclick="moveTimeslot(1);" value="1">Tuesday</input><br>
         <input type="radio" name="dow" onclick="moveTimeslot(2);" value="1">Wednesday</input>
         <input type="radio" name="dow" onclick="moveTimeslot(3);" value="1">Thursday</input>
         <input type="radio" name="dow" onclick="moveTimeslot(4);" value="1" >Friday</input>
         <input type="radio" name="dow" onclick="moveTimeslot(5);" value="1" >Saturday</input>
         <input type="radio" name="dow" onclick="moveTimeslot(6);" value="1" >Sunday</input>
+        
 </form>
+</label>
+</div>
     </div>
 </div>
 
@@ -148,16 +154,7 @@ var startTime = 0;
 
 map.on('load', function() {
 
-    // Data courtesy of http://earthquake.usgs.gov/
-    // Query for significant earthquakes in 2015 URL request looked like this:
-    // http://earthquake.usgs.gov/fdsnws/event/1/query
-    //    ?format=geojson
-    //    &starttime=2015-01-01
-    //    &endtime=2015-12-31
-    //    &minmagnitude=6'
-    //
-    // Here we're using d3 to help us make the ajax request but you can use
-    // Any request method (library or otherwise) you wish.
+    
     d3.json('https://shravan91.github.io/telplan/data/intersections_centrality_closeness.csv.geojson', function(err, data) {
         if (err) throw err;
 
