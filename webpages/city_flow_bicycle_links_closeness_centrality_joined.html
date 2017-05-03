@@ -27,6 +27,7 @@
     border-radius: 3px;
     padding: 10px;
     margin-bottom: 10px;
+    height: auto;
 }
 
 .map-overlay h2 {
@@ -57,13 +58,33 @@
     <div class='map-overlay-inner'>
         <h2>Telplan</h2>
         <p id='date'></p>
-        <input id='slider' type='range' min='0' max='11' step='1' value='0' />
+        <input id='slider' type='range' min='0' max='23' step='1' value='0' />
     </div>
     <div class='map-overlay-inner'>
         <div id='legend' class='legend'>
             <div class='bar'></div>
             <div id="measurement-type"></div>
         </div>
+    </div>
+
+    <div class='map-overlay-inner'>
+<form action="">
+<div>
+<label>
+    <Table>
+        <tr>
+            <td>Mon &nbsp;<input type="radio" name="dow" onclick="moveTimeslot(0);" value="0"></input><br></td>
+            <td>Tues &nbsp;<input type="radio" name="dow" onclick="moveTimeslot(1);" value="1"></input><br></td>
+            <td>Wed &nbsp;<input type="radio" name="dow" onclick="moveTimeslot(2);" value="1"></input></td>
+            <td>Thurs &nbsp;<input type="radio" name="dow" onclick="moveTimeslot(3);" value="1"></input></td>
+            <td>Fri &nbsp;<input type="radio" name="dow" onclick="moveTimeslot(4);" value="1" ></input></td>
+            <td>Sat &nbsp;<input type="radio" name="dow" onclick="moveTimeslot(5);" value="1" ></input></td>
+            <td>Sun &nbsp;<input type="radio" name="dow" onclick="moveTimeslot(6);" value="1" ></input></td>
+        </tr>
+    </Table>
+</form>
+</label>
+</div>
     </div>
 </div>
 
@@ -80,9 +101,23 @@ var map = new mapboxgl.Map({
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
+function moveTimeslot(day){
+    day = parseInt(day);
+    var hours = parseInt(document.getElementById('slider').value);
+    var day = parseInt(properties['day_'+day]);
+    if (!day){
+        return;
+    }
+    console.log("day "+day);
+    console.log("hours "+hours);
+    changeTimeslot(Math.round(day+hours));
+}
+
 function changeTimeslot(slot){
+    console.log("Move to timeslot "+slot);
     map.removeLayer('centrality');
     layer.paint['line-color']['property'] = slot.toString();
+ //  layer.paint['line-color']['property'] = slot.toString();
     map.addLayer(layer, 'centrality');
     document.getElementById("date").innerHTML = new Date(startTime+slot*3600*1000);
 };
@@ -94,7 +129,7 @@ var layer = {
         type: 'geojson',
       },
       paint: {
-        'line-width': 4,
+                'line-width': 4,
         'line-color': {
           property: '0',
           stops: [
@@ -111,20 +146,12 @@ var layer = {
     //  filter: ['==', 'Hour', 1]
     }
 
+var properties = {};
 var startTime = 0;
 
 map.on('load', function() {
 
-    // Data courtesy of http://earthquake.usgs.gov/
-    // Query for significant earthquakes in 2015 URL request looked like this:
-    // http://earthquake.usgs.gov/fdsnws/event/1/query
-    //    ?format=geojson
-    //    &starttime=2015-01-01
-    //    &endtime=2015-12-31
-    //    &minmagnitude=6'
-    //
-    // Here we're using d3 to help us make the ajax request but you can use
-    // Any request method (library or otherwise) you wish.
+   
     d3.json('https://shravan91.github.io/telplan/data/city_flow_bicycle_links_closeness_centrality_joined.csv.geojson', function(err, data) {
         if (err) throw err;
 
@@ -137,14 +164,17 @@ map.on('load', function() {
         map.addSource('intersections_centrality_closeness', {
             'type': 'geojson',
             'data': data
-        });
+       });
         layer['source']['data'] = data;
+        properties = data['properties']
         var minSlot = data['properties']['min_timeslot'];
         var maxSlot = data['properties']['max_timeslot'];
         startTime = data['properties']['starttime'];
-        var minValue = data['properties']['min_value'] - 0.0000019073486328124998;
-        var maxValue = data['properties']['max_value'] + 0.0000019073486328124998;
+        var minValue = data['properties']['min_value'];
+        var maxValue = data['properties']['max_value'];
 /* adapt layer to min /max value of values */
+        layer.paint['line-color']['stops'][0][0] = minValue;
+        layer.paint['line-color']['stops'][1][0] = maxValue;
 
         var degree = (maxValue-minValue)/6;
         layer.paint['line-color']['stops'][0][0] = minValue;
@@ -156,16 +186,15 @@ map.on('load', function() {
         map.addLayer(layer, 'measures');
         document.getElementById("measurement-type").innerHTML = data['properties']['type']
         document.getElementById("date").innerHTML = new Date(startTime);
-        document.getElementById('slider').setAttribute('min',minSlot);
-        document.getElementById('slider').setAttribute('max',maxSlot);
         document.getElementById('slider').addEventListener('input', function(e) {
             var slot = parseInt(e.target.value, 10);
             changeTimeslot(slot);
-            console.log(e.target.value);
         });
+moveTimeslot(0);
     });
 });
 </script>
 
 </body>
 </html>
+
