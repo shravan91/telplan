@@ -103,7 +103,7 @@ map.addControl(new mapboxgl.NavigationControl());
 function moveTimeslot(dayNumber){
     var dayNumber = parseInt(dayNumber);
     var hours = parseInt(document.getElementById('slider').value);
-    day = parseInt(properties['day_'+day]);
+    day = parseInt(properties['day_'+dayNumber]);
     if (!day){
         return;
     }
