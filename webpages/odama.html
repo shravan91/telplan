@@ -114,7 +114,9 @@ function moveTimeslot(dayNumber){
 
 function changeTimeslot(slot){
     console.log("Move to timeslot "+slot);
+if (map.getLayer('betweenness')) {
     map.removeLayer('betweenness');
+}
     layer.paint['line-color']['property'] = slot.toString();
  //  layer.paint['line-color']['property'] = slot.toString();
     map.addLayer(layer, 'betweenness');
