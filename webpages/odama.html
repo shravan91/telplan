@@ -100,10 +100,10 @@ var map = new mapboxgl.Map({
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
-function moveTimeslot(day){
-    day = parseInt(day);
+function moveTimeslot(dayNumber){
+    var dayNumber = parseInt(dayNumber);
     var hours = parseInt(document.getElementById('slider').value);
-    var day = parseInt(properties['day_'+day]);
+    day = parseInt(properties['day_'+day]);
     if (!day){
         return;
     }
@@ -147,7 +147,7 @@ var layer = {
 
 var properties = {};
 var startTime = 0;
-
+var day = 0;
 map.on('load', function() {
 
    
@@ -186,7 +186,7 @@ map.on('load', function() {
         document.getElementById("measurement-type").innerHTML = data['properties']['type']
         document.getElementById("date").innerHTML = new Date(startTime);
         document.getElementById('slider').addEventListener('input', function(e) {
-            var slot = parseInt(e.target.value, 10);
+            var slot = day + parseInt(e.target.value, 10);
             changeTimeslot(slot);
         });
 moveTimeslot(0);

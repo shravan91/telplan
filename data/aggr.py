@@ -37,6 +37,12 @@ for i in range(min_timeslot,max_timeslot):
       if key not in x['properties']:
           x['properties'][key] = i
 
+for feature in x['features']:
+    for i in range(min_timeslot,max_timeslot):
+        if i not in feature['properties']:
+            feature['properties'][i] = 0
+
+
 print x['properties']
 g = open(sys.argv[1],'w')
 simplejson.dump(x, g)
