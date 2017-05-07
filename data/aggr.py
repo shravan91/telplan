@@ -13,6 +13,8 @@ for feature in x['features']:
    for timeslot,value in feature['properties'].items():
        timeslot = int(timeslot)
        value = float(value)
+       if value == 0:
+          continue
        if timeslot < min_timeslot:
            min_timeslot = timeslot
        if timeslot > max_timeslot:

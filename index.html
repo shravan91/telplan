@@ -57,7 +57,7 @@
     <div class='map-overlay-inner'>
         <h2>Telplan</h2>
         <p id='date'></p>
-        <input id='slider' type='range' min='0' max='23' step='1' value='8' />
+        <input id='slider' type='range' min='0' max='23' step='1' value='0' />
     </div>
     <div class='map-overlay-inner'>
         <div id='legend' class='legend'>
@@ -114,15 +114,15 @@ function moveTimeslot(dayNumber){
 
 function changeTimeslot(slot){
     console.log("Move to timeslot "+slot);
-    map.removeLayer('centrality');
+    map.removeLayer('betweenness');
     layer.paint['line-color']['property'] = slot.toString();
  //  layer.paint['line-color']['property'] = slot.toString();
-    map.addLayer(layer, 'centrality');
+    map.addLayer(layer, 'betweenness');
     document.getElementById("date").innerHTML = new Date(startTime+slot*3600*1000);
 };
 
 var layer = {
-      id: 'centrality',
+      id: 'measures',
       type: 'line',
       source: {
         type: 'geojson',
@@ -160,7 +160,7 @@ map.on('load', function() {
             d.properties.month = new Date(d.properties.time).getMonth();
             return d;
         });*/
-        map.addSource('intersections_centrality_closeness', {
+        map.addSource('betweenness', {
             'type': 'geojson',
             'data': data
        });
@@ -182,7 +182,7 @@ map.on('load', function() {
         layer.paint['line-color']['stops'][3][0] = minValue+degree*3;
         layer.paint['line-color']['stops'][4][0] = minValue+degree*4;
         layer.paint['line-color']['stops'][5][0] = maxValue;
-        map.addLayer(layer, 'measures');
+        map.addLayer(layer, 'betweenness');
         document.getElementById("measurement-type").innerHTML = data['properties']['type']
         document.getElementById("date").innerHTML = new Date(startTime);
         document.getElementById('slider').addEventListener('input', function(e) {
